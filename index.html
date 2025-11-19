@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FNF Mods - Plataforma</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fundo animado estilo FNF */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(255, 0, 255, 0.03) 50px,
+                    rgba(255, 0, 255, 0.03) 100px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(0, 255, 255, 0.03) 50px,
+                    rgba(0, 255, 255, 0.03) 100px
+                );
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* Animações */
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-15deg);
+            }
+            50% {
+                transform: scale(1.05) rotate(5deg);
+            }
+            70% {
+                transform: scale(0.9) rotate(-3deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-2deg); }
+            75% { transform: translateX(5px) rotate(2deg); }
+        }
+
+        @keyframes rainbow {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* Header Cartunesco */
+        header {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+            border-bottom: 5px solid #000;
+            position: relative;
+            z-index: 100;
+            animation: bounceIn 0.6s ease;
+        }
+
+        .logo {
+            font-family: 'Bungee', cursive;
+            font-size: 36px;
+            color: #fff;
+            text-shadow: 
+                4px 4px 0 #000,
+                4px 4px 0 #000,
+                6px 6px 0 rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            animation: shake 2s ease infinite;
+        }
+
+        .logo:hover {
+            animation: rainbow 2s linear infinite;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border: 4px solid #000;
+            border-radius: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                0 6px 0 #000,
+                0 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .btn:active {
+            transform: translateY(6px);
+            box-shadow: 
+                0 0px 0 #000,
+                0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, #00f5ff 0%, #0088ff 100%);
+            color: #000;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #ff006e 0%, #ff6d00 100%);
+            color: #fff;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) rotate(-2deg);
+            box-shadow: 
+                0 9px 0 #000,
+                0 12px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Container Principal */
+        .page-container {
+            position: relative;
+            z-index: 1;
+            min-height: calc(100vh - 200px);
+            padding-bottom: 150px;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 0 50px;
+            animation: bounceIn 0.8s ease;
+        }
+
+        /* Páginas */
+        .page {
+            display: none;
+            animation: bounceIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Bungee', cursive;
+            font-size: 72px;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #00f5ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            animation: rainbow 3s ease infinite;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .hero-title::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            z-index: -1;
+            background: #000;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            color: #fff;
+            font-weight: 600;
+            text-shadow: 3px 3px 0 #000;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 20px 60px 20px 30px;
+            border: 5px solid #000;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 6px 0 #000, 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            background: #fff;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 9px 0 #000, 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 28px;
+        }
+
+        /* Grid de Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .mod-card {
+            background: #fff;
+            border: 5px solid #000;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 0 #000, 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            animation: bounceIn 0.6s ease;
+            animation-fill-mode: both;
+        }
+
+        .mod-card:nth-child(1) { animation-delay: 0.1s; }
+        .mod-card:nth-child(2) { animation-delay: 0.2s; }
+        .mod-card:nth-child(3) { animation-delay: 0.3s; }
+        .mod-card:nth-child(4) { animation-delay: 0.4s; }
+        .mod-card:nth-child(5) { animation-delay: 0.5s; }
+        .mod-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .mod-card:hover {
+            transform: translateY(-15px) rotate(-2deg) scale(1.05);
+            box-shadow: 0 15px 0 #000, 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .mod-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            border-bottom: 5px solid #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mod-image::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 255, 255, 0.1) 10px,
+                rgba(255, 255, 255, 0.1) 20px
+            );
+            animation: gridMove 10s linear infinite;
+            z-index: 1;
+        }
+
+        .mod-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+        }
+
+        .mod-image-emoji {
+            position: relative;
+            z-index: 2;
+        }
+
+        .mod-info {
+            padding: 25px;
+            background: #fff;
+        }
+
+        .mod-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 12px;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .mod-description {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .mod-stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .stat {
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 3px solid #000;
+            box-shadow: 0 3px 0 #000;
+        }
+
+        /* Footer Navigation Cartunesco */
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #8338ec 0%, #3a86ff 100%);
+            padding: 20px 30px;
+            box-shadow: 0 -6px 0 #000, 0 -8px 40px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid #000;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 12px 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px) rotate(-5deg) scale(1.1);
+            border: 3px solid #000;
+            box-shadow: 0 6px 0 #000, 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-item.active {
+            background: #fff;
+            border: 3px solid #000;
+            box-shadow: 0 6px 0 #000;
+            transform: translateY(-5px);
+        }
+
+        .nav-icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            border: 4px solid #000;
+            overflow: hidden;
+            box-shadow: 0 4px 0 #000;
+            transition: all 0.3s ease;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item:hover .nav-icon-wrapper {
+            animation: shake 0.5s ease;
+            box-shadow: 0 6px 0 #000;
+        }
+
+        .nav-icon-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .nav-label {
+            display: none;
+        }
+
+        /* Login Page */
+        .login-container {
+            max-width: 500px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 50px;
+            border-radius: 30px;
+            border: 6px solid #000;
+            box-shadow: 0 10px 0 #000, 0 15px 50px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .boyfriend-character {
+            position: absolute;
+            left: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 180px;
+            height: auto;
+            animation: float 3s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .boyfriend-character img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(4px 4px 0 #000);
+        }
+
+        .login-title {
+            font-family: 'Bungee', cursive;
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #000;
+            text-shadow: 3px 3px 0 rgba(255, 0, 110, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 18px;
+            border: 4px solid #000;
+            border-radius: 15px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: inset 0 4px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            box-shadow: inset 0 4px 0 rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(131, 56, 236, 0.3);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .forgot-password a {
+            color: #8338ec;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* Page Transition */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Bungee', cursive;
+            font-size: 48px;
+            text-shadow: 4px 4px 0 #000;
+            transition: left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .page-transition.active {
+            left: 0;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid #000;
+            border-top: 8px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-top: 30px;
+            box-shadow: 0 6px 0 #000;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            main {
+                padding: 0 20px;
+            }
+
+            .hero-title {
+                font-size: 42px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-nav {
+                padding: 15px 10px;
+                gap: 10px;
+            }
+
+            .nav-item {
+                padding: 8px 12px;
+            }
+
+            .nav-icon-wrapper {
+                width: 55px;
+                height: 55px;
+            }
+
+            .boyfriend-character {
+                display: none;
+            }
+
+            .login-container {
+                margin: 50px auto;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-transition">
+        <div>Carregando...</div>
+        <div class="loading-spinner"></div>
+    </div>
+
+    <header>
+        <div class="logo">🎵 FRIDAY NIGHT FUNKIN - MODS</div>
+        <div class="user-actions">
+            <button class="btn btn-login" onclick="navigateToPage('login')">Login</button>
+            <button class="btn btn-register" onclick="navigateToPage('login')">Registrar</button>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <!-- HOME PAGE -->
+        <main>
+            <div id="home-page" class="page active">
+                <div class="hero-section">
+                    <h1 class="hero-title" data-text="BEM-VINDO!">BEM-VINDO!</h1>
+                    <p class="hero-subtitle">🎮 Descubra os melhores mods de Friday Night Funkin' 🎮</p>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Pesquisar mods...">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="mod-card">
+                        <div class="mod-image">
+                            <img src="whitty.png" alt="VS Whitty" class="mod-banner" data-mod="whitty" style="display: none;">
+                            <span class="mod-image-emoji">🎤</span>
+                        </div>
+                        <div class="mod-info">
+                            <div class="mod-title">VS Whitty</div>
+                            <div class="mod-description">Enfrente o explosivo Whitty em batalhas de rap intensas!</div>
+                            <div class="mod-stats">
+                                <span class="stat">⭐ 4.8</span>
+                                <span class="stat">📥 12K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mod-card">
+                        <div class="mod-image">
+                            <img src="tricky.png" alt="VS Tricky" class="mod-banner" data-mod="tricky" style="display: none;">
+                            <span class="mod-image-emoji">🎵</span>
+                        </div>
+                        <div class="mod-info">
+                            <div class="mod-title">VS Tricky</div>
+                            <div class="mod-description">O palhaço mais maluco chegou pra bagunçar tudo!</div>
+                            <div class="mod-stats">
+                                <span class="stat">⭐ 4.9</span>
+                                <span class="stat">📥 25K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mod-card">
+                        <div class="mod-image">
+                            <img src="shaggy.jpg" alt="VS Shaggy" class="mod-banner" data-mod="shaggy" style="display: none;">
+                            <span class="mod-image-emoji">🎸</span>
+                        </div>
+                        <div class="mod-info">
+                            <div class="mod-title">VS Shaggy</div>
+                            <div class="mod-description">Shaggy usando apenas 0.001% do seu poder!</div>
+                            <div class="mod-stats">
+                                <span class="stat">⭐ 5.0</span>
+                                <span class="stat">📥 18K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mod-card">
+                        <div class="mod-image">
+                            <img src="tabi.jpg" alt="VS Tabi" class="mod-banner" data-mod="tabi" style="display: none;">
+                            <span class="mod-image-emoji">🎹</span>
+                        </div>
+                        <div class="mod-info">
+                            <div class="mod-title">VS Tabi</div>
+                            <div class="mod-description">Ex-namorado misterioso busca vingança!</div>
+                            <div class="mod-stats">
+                                <span class="stat">⭐ 4.7</span>
+                                <span class="stat">📥 15K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mod-card">
+                        <div class="mod-image">
+                            <img src="garcello.jpg" alt="VS Garcello" class="mod-banner" data-mod="garcello" style="display: none;">
+                            <span class="mod-image-emoji">🎼</span>
+                        </div>
+                        <div class="mod-info">
+                            <div class="mod-title">VS Garcello</div>
+                            <div class="mod-description">Relaxe com músicas suaves e emocionantes!</div>
+                            <div class="mod-stats">
+                                <span class="stat">⭐ 4.9</span>
+                                <span class="stat">📥 20K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mod-card">
+                        <div class="mod-image">
+                            <img src="bob.png" alt="VS Bob" class="mod-banner" data-mod="bob" style="display: none;">
+                            <span class="mod-image-emoji">🎺</span>
+                        </div>
+                        <div class="mod-info">
+                            <div class="mod-title">VS Bob</div>
+                            <div class="mod-description">Bob não gosta de você... prepare-se!</div>
+                            <div class="mod-stats">
+                                <span class="stat">⭐ 4.6</span>
+                                <span class="stat">📥 10K</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LOGIN PAGE -->
+            <div id="login-page" class="page">
+                <div class="login-container">
+                    <div class="boyfriend-character">
+                        <img src="lean.png" alt="Boyfriend" id="boyfriend-img">
+                    </div>
+                    <h2 class="login-title">LOGIN</h2>
+                    <div class="form-group">
+                        <label>NOME DO USUÁRIO</label>
+                        <input type="text" placeholder="Digite seu nome de usuário">
+                    </div>
+                    <div class="form-group">
+                        <label>SENHA</label>
+                        <input type="password" placeholder="Digite sua senha">
+                    </div>
+                    <div class="forgot-password">
+                        <a href="#">Esqueceu a senha?</a>
+                    </div>
+                    <button class="btn btn-register" style="width: 100%; margin-top: 20px;">ENTRAR</button>
+                    <button class="btn btn-login" style="width: 100%; margin-top: 15px;">CRIAR CONTA</button>
+                </div>
+            </div>
+
+            <!-- COMUNIDADE PAGE -->
+            <div id="comunidade-page" class="page">
+                <div class="hero-section">
+                    <h1 class="hero-title" data-text="COMUNIDADE">COMUNIDADE</h1>
+                    <p class="hero-subtitle">🤝 Conecte-se com outros jogadores! 🤝</p>
+                </div>
+                <div class="content-grid">
+                    <div class="mod-card">
+                        <div class="mod-image">👥</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Fórum Geral</div>
+                            <div class="mod-description">Discuta tudo sobre FNF e seus mods!</div>
+                            <div class="mod-stats">
+                                <span class="stat">💬 150 posts</span>
+                                <span class="stat">👤 89 users</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAVORITOS PAGE -->
+            <div id="favoritos-page" class="page">
+                <div class="hero-section">
+                    <h1 class="hero-title" data-text="FAVORITOS">FAVORITOS</h1>
+                    <p class="hero-subtitle">⭐ Seus mods favoritos em um só lugar! ⭐</p>
+                </div>
+                <div class="content-grid">
+                    <div class="mod-card">
+                        <div class="mod-image">❤️</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Nenhum favorito ainda</div>
+                            <div class="mod-description">Comece a favoritar seus mods preferidos!</div>
+                            <div class="mod-stats">
+                                <span class="stat">⭐ 0 mods</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPDATES PAGE -->
+            <div id="updates-page" class="page">
+                <div class="hero-section">
+                    <h1 class="hero-title" data-text="UPDATES">UPDATES</h1>
+                    <p class="hero-subtitle">📰 Últimas novidades da plataforma! 📰</p>
+                </div>
+                <div class="content-grid">
+                    <div class="mod-card">
+                        <div class="mod-image">🆕</div>
+                        <div class="mod-info">
+                            <div class="mod-title">Nova atualização v2.0!</div>
+                            <div class="mod-description">Confira as novidades e melhorias do sistema!</div>
+                            <div class="mod-stats">
+                                <span class="stat">📅 Hoje</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPLOAD PAGE -->
+            <div id="upload-page" class="page">
+                <div class="hero-section">
+                    <h1 class="hero-title" data-text="UPLOAD">UPLOAD</h1>
+                    <p class="hero-subtitle">☁️ Compartilhe seus próprios mods! ☁️</p>
+                </div>
+                <div class="login-container">
+                    <h2 class="login-title">ENVIAR MOD</h2>
+                    <div class="form-group">
+                        <label>TÍTULO</label>
+                        <input type="text" placeholder="Nome do seu mod">
+                    </div>
+                    <div class="form-group">
+                        <label>DESCRIÇÃO</label>
+                        <input type="text" placeholder="Descreva seu mod">
+                    </div>
+                    <div class="form-group">
+                        <label>HASHTAGS</label>
+                        <input type="text" placeholder="#mod #fnf #music">
+                    </div>
+                    <div class="form-group">
+                        <label>CRÉDITOS</label>
+                        <input type="text" placeholder="Seu nome ou equipe">
+                    </div>
+                    <button class="btn btn-register" style="width: 100%; margin-top: 20px;">SELECIONE SEU ARQUIVO OU ARRASTE AQUI</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <nav class="footer-nav">
+        <div class="nav-item active" onclick="navigateToPage('home')" data-page="home">
+            <div class="nav-icon-wrapper">
+                <img src="https://via.placeholder.com/70x70/8338ec/ffffff?text=HOME" alt="Home" id="icon-home">
+            </div>
+        </div>
+        <div class="nav-item" onclick="navigateToPage('comunidade')" data-page="comunidade">
+            <div class="nav-icon-wrapper">
+                <img src="comunidade.png" alt="Comunidade" id="icon-comunidade">
+            </div>
+        </div>
+        <div class="nav-item" onclick="navigateToPage('favoritos')" data-page="favoritos">
+            <div class="nav-icon-wrapper">
+                <img src="fav.png" alt="Favoritos" id="icon-favoritos">
+            </div>
+        </div>
+        <div class="nav-item" onclick="navigateToPage('updates')" data-page="updates">
+            <div class="nav-icon-wrapper">
+                <img src="update.png" alt="Updates" id="icon-updates">
+            </div>
+        </div>
+        <div class="nav-item" onclick="navigateToPage('upload')" data-page="upload">
+            <div class="nav-icon-wrapper">
+                <img src="upload.png" alt="Upload" id="icon-upload">
+            </div>
+        </div>
+        <div class="nav-item" onclick="navigateToPage('login')" data-page="login">
+            <div class="nav-icon-wrapper">
+                <img src="login.png" alt="Login" id="icon-login">
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        let currentPage = 'home';
+
+        function navigateToPage(pageName) {
+            if (currentPage === pageName) return;
+
+            const transition = document.querySelector('.page-transition');
+            const pages = document.querySelectorAll('.page');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            // Mostra transição
+            transition.querySelector('div').textContent = `Carregando ${getPageTitle(pageName)}...`;
+            transition.classList.add('active');
+
+            // Esconde página atual
+            document.getElementById(`${currentPage}-page`).classList.remove('active');
+
+            setTimeout(() => {
+                // Mostra nova página
+                document.getElementById(`${pageName}-page`).classList.add('active');
+                
+                // Atualiza navegação ativa
+                navItems.forEach(item => {
+                    if (item.dataset.page === pageName) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+
+                currentPage = pageName;
+
+                // Esconde transição
+                setTimeout(() => {
+                    transition.classList.remove('active');
+                }, 300);
+
+                // Scroll para o topo
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 500);
+        }
+
+        function getPageTitle(pageName) {
+            const titles = {
+                'home': 'Início',
+                'comunidade': 'Comunidade',
+                'favoritos': 'Favoritos',
+                'updates': 'Updates',
+                'upload': 'Upload',
+                'login': 'Login'
+            };
+            return titles[pageName] || pageName;
+        }
+
+        // Substitua os placeholders pelas suas imagens reais
+        function loadCustomIcons() {
+            // ÍCONES DO RODAPÉ (suas imagens já incluem o texto):
+            // document.getElementById('icon-home').src = 'home.png';
+            // document.getElementById('icon-comunidade').src = 'comunidade.png';
+            // document.getElementById('icon-favoritos').src = 'favoritos.png';
+            // document.getElementById('icon-updates').src = 'updates.png';
+            // document.getElementById('icon-upload').src = 'upload.png';
+            // document.getElementById('icon-login').src = 'login.png';
+            
+            document.getElementById('boyfriend-img').src = 'lean.png';
+        }
+
+        // Função para adicionar imagens aos banners dos mods
+        function loadModBanners() {
+          
+            const modBanners = {
+                'whitty': 'whitty.png',
+                'tricky': 'tricky.png',
+                'shaggy': 'shaggy.jpg',
+                'tabi': 'tabi.jpg',
+                'garcello': 'garcello.jpg',
+                'bob': 'bob.png'
+            };
+
+
+            document.querySelectorAll('.mod-banner').forEach(img => {
+                const modName = img.dataset.mod;
+                if (modBanners[modName]) {
+                    img.src = modBanners[modName];
+                    img.style.display = 'block';
+                    img.nextElementSibling.style.display = 'none'; // Esconde o emoji
+                }
+            });
+         
+        }
+
+        // Animações extras ao carregar
+        window.addEventListener('load', () => {
+            loadCustomIcons();
+            loadModBanners();
+            
+            // Adiciona animação de flutuação aleatória aos cards
+            const cards = document.querySelectorAll('.mod-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                // Animação de flutuação contínua
+                setInterval(() => {
+                    if (!card.matches(':hover')) {
+                        card.style.animation = 'float 3s ease-in-out';
+                    }
+                }, 3000 + (index * 500));
+            });
+        });
+
+        // Efeito de digitação no search
+        const searchInput = document.querySelector('.search-bar input');
+        let searchTimeout;
+        
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                if (e.target.value.length > 0) {
+                    searchInput.style.background = 'linear-gradient(135deg, #fff 0%, #f0f0ff 100%)';
+                } else {
+                    searchInput.style.background = '#fff';
+                }
+            }, 300);
+        });
+
+        // Efeito parallax suave no fundo
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            
+            document.body.style.backgroundPosition = `${moveX}px ${moveY}px`;
+        });
+
+        // Easter egg: combo de teclas
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+        
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.key);
+            konamiCode = konamiCode.slice(-8);
+            
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                activateEasterEgg();
+            }
+        });
+
+        function activateEasterEgg() {
+            document.body.style.animation = 'rainbow 2s linear infinite';
+            
+            const cards = document.querySelectorAll('.mod-card');
+            cards.forEach(card => {
+                card.style.animation = 'shake 0.5s ease infinite';
+            });
+            
+            setTimeout(() => {
+                document.body.style.animation = '';
+                cards.forEach(card => {
+                    card.style.animation = '';
+                });
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
