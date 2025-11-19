@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FNF Mods - Plataforma</title>
+    <link rel="preload" as="image" href="comunidade.png">
+    <link rel="preload" as="image" href="fav.png">
+    <link rel="preload" as="image" href="update.png">
+    <link rel="preload" as="image" href="upload.png">
+    <link rel="preload" as="image" href="login.png">
+    <link rel="preload" as="image" href="lean.png">
+    <link rel="preload" as="image" href="whitty.png">
+    <link rel="preload" as="image" href="tricky.png">
+    <link rel="preload" as="image" href="shaggy.jpg">
+    <link rel="preload" as="image" href="tabi.jpg">
+    <link rel="preload" as="image" href="garcello.jpg">
+    <link rel="preload" as="image" href="bob.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@400;600;700&display=swap');
 
@@ -21,7 +33,6 @@
             position: relative;
         }
 
-        /* Fundo animado estilo FNF */
         body::before {
             content: '';
             position: fixed;
@@ -50,15 +61,10 @@
         }
 
         @keyframes gridMove {
-            0% {
-                transform: translate(0, 0);
-            }
-            100% {
-                transform: translate(50px, 50px);
-            }
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
 
-        /* Animações */
         @keyframes bounceIn {
             0% {
                 opacity: 0;
@@ -96,7 +102,27 @@
             100% { filter: hue-rotate(360deg); }
         }
 
-        /* Header Cartunesco */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
         header {
             background: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);
             padding: 20px 50px;
@@ -120,6 +146,7 @@
                 6px 6px 0 rgba(0, 0, 0, 0.3);
             letter-spacing: 2px;
             animation: shake 2s ease infinite;
+            cursor: pointer;
         }
 
         .logo:hover {
@@ -173,7 +200,6 @@
                 0 12px 25px rgba(0, 0, 0, 0.4);
         }
 
-        /* Container Principal */
         .page-container {
             position: relative;
             z-index: 1;
@@ -188,7 +214,6 @@
             animation: bounceIn 0.8s ease;
         }
 
-        /* Páginas */
         .page {
             display: none;
             animation: bounceIn 0.5s ease;
@@ -198,7 +223,6 @@
             display: block;
         }
 
-        /* Hero Section */
         .hero-section {
             text-align: center;
             margin-bottom: 60px;
@@ -270,9 +294,9 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 28px;
+            pointer-events: none;
         }
 
-        /* Grid de Cards */
         .content-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -382,7 +406,6 @@
             box-shadow: 0 3px 0 #000;
         }
 
-        /* Footer Navigation Cartunesco */
         .footer-nav {
             position: fixed;
             bottom: 0;
@@ -454,7 +477,6 @@
             display: none;
         }
 
-        /* Login Page */
         .login-container {
             max-width: 500px;
             margin: 100px auto;
@@ -532,9 +554,14 @@
             color: #8338ec;
             text-decoration: none;
             font-weight: 700;
+            transition: all 0.2s ease;
         }
 
-        /* Page Transition */
+        .forgot-password a:hover {
+            color: #ff006e;
+            text-decoration: underline;
+        }
+
         .page-transition {
             position: fixed;
             top: 0;
@@ -569,12 +596,11 @@
             box-shadow: 0 6px 0 #000;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .home-icon-svg {
+            width: 100%;
+            height: 100%;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             header {
                 padding: 15px 20px;
@@ -629,7 +655,7 @@
     </div>
 
     <header>
-        <div class="logo">🎵 FRIDAY NIGHT FUNKIN - MODS</div>
+        <div class="logo" onclick="navigateToPage('home')">🎵 FRIDAY NIGHT FUNKIN - MODS</div>
         <div class="user-actions">
             <button class="btn btn-login" onclick="navigateToPage('login')">Login</button>
             <button class="btn btn-register" onclick="navigateToPage('login')">Registrar</button>
@@ -637,7 +663,6 @@
     </header>
 
     <div class="page-container">
-        <!-- HOME PAGE -->
         <main>
             <div id="home-page" class="page active">
                 <div class="hero-section">
@@ -652,8 +677,7 @@
                 <div class="content-grid">
                     <div class="mod-card">
                         <div class="mod-image">
-                            <img src="whitty.png" alt="VS Whitty" class="mod-banner" data-mod="whitty" style="display: none;">
-                            <span class="mod-image-emoji">🎤</span>
+                            <img src="whitty.png" alt="VS Whitty" data-mod="whitty">
                         </div>
                         <div class="mod-info">
                             <div class="mod-title">VS Whitty</div>
@@ -667,8 +691,7 @@
 
                     <div class="mod-card">
                         <div class="mod-image">
-                            <img src="tricky.png" alt="VS Tricky" class="mod-banner" data-mod="tricky" style="display: none;">
-                            <span class="mod-image-emoji">🎵</span>
+                            <img src="tricky.png" alt="VS Tricky" data-mod="tricky">
                         </div>
                         <div class="mod-info">
                             <div class="mod-title">VS Tricky</div>
@@ -682,8 +705,7 @@
 
                     <div class="mod-card">
                         <div class="mod-image">
-                            <img src="shaggy.jpg" alt="VS Shaggy" class="mod-banner" data-mod="shaggy" style="display: none;">
-                            <span class="mod-image-emoji">🎸</span>
+                            <img src="shaggy.jpg" alt="VS Shaggy" data-mod="shaggy">
                         </div>
                         <div class="mod-info">
                             <div class="mod-title">VS Shaggy</div>
@@ -697,8 +719,7 @@
 
                     <div class="mod-card">
                         <div class="mod-image">
-                            <img src="tabi.jpg" alt="VS Tabi" class="mod-banner" data-mod="tabi" style="display: none;">
-                            <span class="mod-image-emoji">🎹</span>
+                            <img src="tabi.jpg" alt="VS Tabi" data-mod="tabi">
                         </div>
                         <div class="mod-info">
                             <div class="mod-title">VS Tabi</div>
@@ -712,8 +733,7 @@
 
                     <div class="mod-card">
                         <div class="mod-image">
-                            <img src="garcello.jpg" alt="VS Garcello" class="mod-banner" data-mod="garcello" style="display: none;">
-                            <span class="mod-image-emoji">🎼</span>
+                            <img src="garcello.jpg" alt="VS Garcello" data-mod="garcello">
                         </div>
                         <div class="mod-info">
                             <div class="mod-title">VS Garcello</div>
@@ -727,8 +747,7 @@
 
                     <div class="mod-card">
                         <div class="mod-image">
-                            <img src="bob.png" alt="VS Bob" class="mod-banner" data-mod="bob" style="display: none;">
-                            <span class="mod-image-emoji">🎺</span>
+                            <img src="bob.png" alt="VS Bob" data-mod="bob">
                         </div>
                         <div class="mod-info">
                             <div class="mod-title">VS Bob</div>
@@ -742,11 +761,10 @@
                 </div>
             </div>
 
-            <!-- LOGIN PAGE -->
             <div id="login-page" class="page">
                 <div class="login-container">
                     <div class="boyfriend-character">
-                        <img src="lean.png" alt="Boyfriend" id="boyfriend-img">
+                        <img src="lean.png" alt="Boyfriend">
                     </div>
                     <h2 class="login-title">LOGIN</h2>
                     <div class="form-group">
@@ -765,7 +783,6 @@
                 </div>
             </div>
 
-            <!-- COMUNIDADE PAGE -->
             <div id="comunidade-page" class="page">
                 <div class="hero-section">
                     <h1 class="hero-title" data-text="COMUNIDADE">COMUNIDADE</h1>
@@ -786,7 +803,6 @@
                 </div>
             </div>
 
-            <!-- FAVORITOS PAGE -->
             <div id="favoritos-page" class="page">
                 <div class="hero-section">
                     <h1 class="hero-title" data-text="FAVORITOS">FAVORITOS</h1>
@@ -806,7 +822,6 @@
                 </div>
             </div>
 
-            <!-- UPDATES PAGE -->
             <div id="updates-page" class="page">
                 <div class="hero-section">
                     <h1 class="hero-title" data-text="UPDATES">UPDATES</h1>
@@ -826,7 +841,6 @@
                 </div>
             </div>
 
-            <!-- UPLOAD PAGE -->
             <div id="upload-page" class="page">
                 <div class="hero-section">
                     <h1 class="hero-title" data-text="UPLOAD">UPLOAD</h1>
@@ -859,32 +873,36 @@
     <nav class="footer-nav">
         <div class="nav-item active" onclick="navigateToPage('home')" data-page="home">
             <div class="nav-icon-wrapper">
-                <img src="https://via.placeholder.com/70x70/8338ec/ffffff?text=HOME" alt="Home" id="icon-home">
+                <svg class="home-icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <rect fill="#ff006e" width="100" height="100" rx="15"/>
+                    <path d="M50 25 L75 47 L75 75 L60 75 L60 55 L40 55 L40 75 L25 75 L25 47 Z" fill="#fff" stroke="#000" stroke-width="3"/>
+                    <rect x="45" y="60" width="10" height="15" fill="#000"/>
+                </svg>
             </div>
         </div>
         <div class="nav-item" onclick="navigateToPage('comunidade')" data-page="comunidade">
             <div class="nav-icon-wrapper">
-                <img src="comunidade.png" alt="Comunidade" id="icon-comunidade">
+                <img src="comunidade.png" alt="Comunidade">
             </div>
         </div>
         <div class="nav-item" onclick="navigateToPage('favoritos')" data-page="favoritos">
             <div class="nav-icon-wrapper">
-                <img src="fav.png" alt="Favoritos" id="icon-favoritos">
+                <img src="fav.png" alt="Favoritos">
             </div>
         </div>
         <div class="nav-item" onclick="navigateToPage('updates')" data-page="updates">
             <div class="nav-icon-wrapper">
-                <img src="update.png" alt="Updates" id="icon-updates">
+                <img src="update.png" alt="Updates">
             </div>
         </div>
         <div class="nav-item" onclick="navigateToPage('upload')" data-page="upload">
             <div class="nav-icon-wrapper">
-                <img src="upload.png" alt="Upload" id="icon-upload">
+                <img src="upload.png" alt="Upload">
             </div>
         </div>
         <div class="nav-item" onclick="navigateToPage('login')" data-page="login">
             <div class="nav-icon-wrapper">
-                <img src="login.png" alt="Login" id="icon-login">
+                <img src="login.png" alt="Login">
             </div>
         </div>
     </nav>
@@ -896,21 +914,16 @@
             if (currentPage === pageName) return;
 
             const transition = document.querySelector('.page-transition');
-            const pages = document.querySelectorAll('.page');
             const navItems = document.querySelectorAll('.nav-item');
 
-            // Mostra transição
             transition.querySelector('div').textContent = `Carregando ${getPageTitle(pageName)}...`;
             transition.classList.add('active');
 
-            // Esconde página atual
             document.getElementById(`${currentPage}-page`).classList.remove('active');
 
             setTimeout(() => {
-                // Mostra nova página
                 document.getElementById(`${pageName}-page`).classList.add('active');
                 
-                // Atualiza navegação ativa
                 navItems.forEach(item => {
                     if (item.dataset.page === pageName) {
                         item.classList.add('active');
@@ -921,12 +934,10 @@
 
                 currentPage = pageName;
 
-                // Esconde transição
                 setTimeout(() => {
                     transition.classList.remove('active');
                 }, 300);
 
-                // Scroll para o topo
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }, 500);
         }
@@ -943,54 +954,11 @@
             return titles[pageName] || pageName;
         }
 
-        // Substitua os placeholders pelas suas imagens reais
-        function loadCustomIcons() {
-            // ÍCONES DO RODAPÉ (suas imagens já incluem o texto):
-            // document.getElementById('icon-home').src = 'home.png';
-            // document.getElementById('icon-comunidade').src = 'comunidade.png';
-            // document.getElementById('icon-favoritos').src = 'favoritos.png';
-            // document.getElementById('icon-updates').src = 'updates.png';
-            // document.getElementById('icon-upload').src = 'upload.png';
-            // document.getElementById('icon-login').src = 'login.png';
-            
-            document.getElementById('boyfriend-img').src = 'lean.png';
-        }
-
-        // Função para adicionar imagens aos banners dos mods
-        function loadModBanners() {
-          
-            const modBanners = {
-                'whitty': 'whitty.png',
-                'tricky': 'tricky.png',
-                'shaggy': 'shaggy.jpg',
-                'tabi': 'tabi.jpg',
-                'garcello': 'garcello.jpg',
-                'bob': 'bob.png'
-            };
-
-
-            document.querySelectorAll('.mod-banner').forEach(img => {
-                const modName = img.dataset.mod;
-                if (modBanners[modName]) {
-                    img.src = modBanners[modName];
-                    img.style.display = 'block';
-                    img.nextElementSibling.style.display = 'none'; // Esconde o emoji
-                }
-            });
-         
-        }
-
-        // Animações extras ao carregar
         window.addEventListener('load', () => {
-            loadCustomIcons();
-            loadModBanners();
-            
-            // Adiciona animação de flutuação aleatória aos cards
             const cards = document.querySelectorAll('.mod-card');
             cards.forEach((card, index) => {
                 card.style.animationDelay = `${index * 0.1}s`;
                 
-                // Animação de flutuação contínua
                 setInterval(() => {
                     if (!card.matches(':hover')) {
                         card.style.animation = 'float 3s ease-in-out';
@@ -999,7 +967,6 @@
             });
         });
 
-        // Efeito de digitação no search
         const searchInput = document.querySelector('.search-bar input');
         let searchTimeout;
         
@@ -1014,7 +981,6 @@
             }, 300);
         });
 
-        // Efeito parallax suave no fundo
         document.addEventListener('mousemove', (e) => {
             const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
             const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
@@ -1022,7 +988,6 @@
             document.body.style.backgroundPosition = `${moveX}px ${moveY}px`;
         });
 
-        // Easter egg: combo de teclas
         let konamiCode = [];
         const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
         
@@ -1050,6 +1015,24 @@
                 });
             }, 5000);
         }
+
+        document.querySelectorAll('.mod-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.animation = 'pulse 0.3s ease';
+                setTimeout(() => {
+                    this.style.animation = '';
+                }, 300);
+            });
+        });
+
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.animation = 'pulse 0.5s ease';
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.style.animation = '';
+            });
+        });
     </script>
 </body>
 </html>
